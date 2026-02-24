@@ -1,0 +1,75 @@
+<h2>CS140A11 - Compilation Process: From Source to Executable</h2>
+
+<h3>Learning Objectives</h3>
+<ul>
+  <li>Understand the 4 stages of C++ compilation: <strong>Preprocessor &rarr; Compiler &rarr; Assembler &rarr; Linker</strong></li>
+  <li>Use <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">g++</span> flags to produce each intermediate file</li>
+  <li>Examine the output of each stage (<span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">.i</span>, <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">.s</span>, <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">.o</span>, <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">a.out</span>)</li>
+</ul>
+
+<hr>
+
+<h3>Compilation Stages</h3>
+
+<h4>Step 1: Preprocess (<span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">-E</span>)</h4>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">g++ -E main.cpp -o main.i</pre>
+<p>Expands <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">#include</span> headers and macros. The output <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.i</span> is a large text file with all headers inlined.</p>
+
+<h4>Step 2: Compile to Assembly (<span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">-S</span>)</h4>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">g++ -S main.cpp -o main.s</pre>
+<p>Translates C++ into assembly language. The output <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.s</span> contains assembly directives like <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">.text</span>, <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">.globl</span>, and CPU instructions.</p>
+
+<h4>Step 3: Assemble to Object File (<span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">-c</span>)</h4>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">g++ -c main.cpp -o main.o</pre>
+<p>Converts assembly into machine code (binary). The output <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.o</span> is a binary file — not human-readable, but string literals like <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">"Hello"</span> can be found with the <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">strings</span> command.</p>
+
+<h4>Step 4: Link to Executable</h4>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">g++ main.o -o a.out</pre>
+<p>Links the object file with system libraries to produce the final executable <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">a.out</span>.</p>
+
+<h4>Step 5: Run</h4>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">./a.out > result.txt</pre>
+<p>Run the executable and save the output to <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">result.txt</span>.</p>
+
+<hr>
+
+<h3>What to Submit</h3>
+<p>You must <strong>commit and push</strong> the following files to your GitHub repository:</p>
+<ul>
+  <li><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.cpp</span> — your source code (already provided)</li>
+  <li><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.i</span> — preprocessed output</li>
+  <li><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.s</span> — assembly output</li>
+  <li><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.o</span> — object file</li>
+  <li><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">result.txt</span> — program output</li>
+</ul>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">git add main.cpp main.i main.s main.o result.txt
+git commit -m "completed all compilation stages"
+git push</pre>
+
+<hr>
+
+<h3>How to Test Locally</h3>
+<pre style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;padding:8px 12px;border:1px solid #ccc;border-radius:4px;line-height:1.5;overflow-x:auto;">data/run.sh
+pytest -rP</pre>
+
+<hr>
+
+<h3>Grading (100 points)</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr><th>Test</th><th>Points</th><th>What it checks</th></tr>
+  <tr><td>Compile</td><td>20</td><td><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.cpp</span> compiles with <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">g++ -Wall -Wextra</span></td></tr>
+  <tr><td>T1 — Preprocessor</td><td>20</td><td><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.i</span> exists, headers expanded, no <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">#include</span> remaining</td></tr>
+  <tr><td>T2 — Compiler</td><td>20</td><td><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.s</span> exists, contains assembly directives and <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">"Hello"</span> string</td></tr>
+  <tr><td>T3 — Assembler</td><td>20</td><td><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">main.o</span> exists, <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">strings</span> finds <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">"Hello"</span> in binary</td></tr>
+  <tr><td>T4 — Linker</td><td>20</td><td><span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">result.txt</span> exists and contains <span style="font-family:'Lucida Console',Monaco,monospace;font-weight:900;color:#cc0000;">"Hello"</span></td></tr>
+</table>
+
+<hr>
+
+<h3>GitHub Classroom</h3>
+<p><a href="https://classroom.github.com/a/gdX4myey">Accept the assignment here</a></p>
+
+<hr>
+
+<h3>Lecture Slide: Compilation Process</h3>
+<iframe src="https://docs.google.com/presentation/d/1zv7PAaEe_iP4MUH-LyFtF2K2jSITcKinZlID7JMEcpA/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" style="max-width:100%;"></iframe>
